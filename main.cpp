@@ -72,7 +72,9 @@ CS2420Stack<T>::CS2420Stack(const unsigned int size){
 // Default destructor, deletes the pointer
 template <typename T>
 CS2420Stack<T>::~CS2420Stack() {
-    delete arr;
+    delete[] arr;
+    arr = nullptr;
+    currentSize, capacity = 0;
 }
 
 // Checks the currentSize of the array and assigns appropriate values.
@@ -135,14 +137,24 @@ CS2420Queue<T>::~CS2420Queue() {
 
 template <typename T>
 void CS2420Queue<T>::pushBack(const T& item) {
+    if (currentSize >= capacity)
+    {
+        cout << "ERROR: Try again with different values." << endl;
+        return;
+    }
     arr[currentSize] = item;
     currentSize++;
 }
 
 template <typename T>
 T CS2420Queue<T>::popFront() {
+    if(currentSize == 0){
+        cout << "ERROR: Stack is empty." << endl;
+        throw 1;
+    }
     T temp = arr[front];
     front++;
+    currentSize--;
     return temp;
 }
 
@@ -328,35 +340,35 @@ void testCS2420Queue() {
 
     checkTest("testCS2420Queue #1", 4, pQueue->size());
 
-//    checkTest("testCS2420Queue #2", "penny", pQueue->popFront());
-//    checkTest("testCS2420Queue #3", 3, pQueue->size());
-//
-//    checkTest("testCS2420Queue #4", "nickel", pQueue->popFront());
-//    checkTest("testCS2420Queue #5", "dime", pQueue->popFront());
-//    checkTest("testCS2420Queue #6", "quarter", pQueue->popFront());
-//    checkTest("testCS2420Queue #7", 0, pQueue->size());
-//
-//    caughtError = "not caught";
-//    try {
-//        result = pQueue->popFront();
-//    }
-//    catch (int e) {
-//        caughtError = "caught";
-//    }
-//    checkTest("testCS2420Queue #8", "caught", caughtError);
-//    checkTest("testCS2420Queue #9", 0, pQueue->size());
-//
-//    //Try it again.  This should make it wrap around, and fill up.
-//    pQueue->pushBack("penny");
-//    pQueue->pushBack("nickel");
-//    pQueue->pushBack("dime");
-//    pQueue->pushBack("quarter");
-//
-//    checkTest("testCS2420Queue #10", "penny", pQueue->popFront());
-//    pQueue->pushBack("half dollar");
-//    pQueue->pushBack("silver dollar");
-//
-//    //It should be full, no more room to add more.
+    checkTest("testCS2420Queue #2", "penny", pQueue->popFront());
+    checkTest("testCS2420Queue #3", 3, pQueue->size());
+
+    checkTest("testCS2420Queue #4", "nickel", pQueue->popFront());
+    checkTest("testCS2420Queue #5", "dime", pQueue->popFront());
+    checkTest("testCS2420Queue #6", "quarter", pQueue->popFront());
+    checkTest("testCS2420Queue #7", 0, pQueue->size());
+
+    caughtError = "not caught";
+    try {
+        result = pQueue->popFront();
+    }
+    catch (int e) {
+        caughtError = "caught";
+    }
+    checkTest("testCS2420Queue #8", "caught", caughtError);
+    checkTest("testCS2420Queue #9", 0, pQueue->size());
+
+    //Try it again.  This should make it wrap around, and fill up.
+    pQueue->pushBack("penny");
+    pQueue->pushBack("nickel");
+    pQueue->pushBack("dime");
+    pQueue->pushBack("quarter");
+
+    checkTest("testCS2420Queue #10", "penny", pQueue->popFront());
+    pQueue->pushBack("half dollar");
+    pQueue->pushBack("silver dollar");
+
+    //It should be full, no more room to add more.
 //    pQueue->pushBack("million dollar bill");
 //
 //    checkTest("testCS2420Queue #11", "nickel", pQueue->popFront());
